@@ -7,15 +7,19 @@ var pokemonList = [
 //Define the height threshold 
 var bigPokemon = 1.5;
 
-for(var i = 0; i < pokemonList.length; i++){
-    var pokemon = pokemonList[i];
-    var output = pokemon.name + " (height: " + pokemon.height + ")";
+//for(var i = 0; i < pokemonList.length; i++){
+    //var pokemon = pokemonList[i];
+    //var output = pokemon.name + " (height: " + pokemon.height + ")";
     
-    if(pokemon.height > bigPokemon){
-        output += 'Wow, thats big!';
-    }
+    //if(pokemon.height > bigPokemon){
+        //output += 'Wow, thats big!';
+    //}
      // Display the Pokémon information with the special label
-    document.write("<p>" + output + "</p>");
+    //document.write("<p>" + output + "</p>");
     
-    document.getElementById("output").innerHTML += `Name: ${pokemon.name}, Height: ${pokemon.height}, Type: ${pokemon.type}<br>`;
-}
+    //document.getElementById("output").innerHTML += `Name: ${pokemon.name}, Height: ${pokemon.height}, Type: ${pokemon.type}<br>`;
+//}
+pokemonList.forEach(function(pokemon){
+    document.getElementById("output").innerHTML += 'Name:' + pokemon.name + ' , Height:' + pokemon.height + ' , Type:' + pokemon.type + '<br>'
+    
+});
