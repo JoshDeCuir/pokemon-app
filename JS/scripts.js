@@ -5,33 +5,40 @@ var pokemonRepository = (function (){
         {name:"Charizard", height: 1.7, type: ['Flying , Fire']},
         {name:"Squirtle", height: 0.5, type: 'Water'}
     ];
+    
+    function addListItem(pokemon){
+        var pokemonList = document.querySelector(".pokemon-list");
+        var listPokemon = document.createElement("li");
+        var button = document.createElement("button");
+        button.addEventListener("click", function(){
+            showDetails(pokemon.name);
+        });
+        button.innerText = pokemon.name;
+        button.classList.add("button-class");
+        listPokemon.appendChild(button);
+        pokemonList.appendChild(listPokemon);
+    }
+    function showDetails(pokemon){
+        console.log(pokemon);
+    }
+    function add(pokemon){
+        pokemonList.push(pokemon);
+    }
+    function getAll(){
+        return pokemonList;
+    }
     return{
-        add: function(pokemon){
-            pokemonList.push(pokemon);
-        },
-        getAll: function(){
-            return pokemonList;
-        }
-    };
+        add: add,
+        getAll: getAll,
+        addListItem: addListItem
+    }
 })();
 
-//Define the height threshold 
-//var bigPokemon = 1.5;
+        pokemonRepository.add({name: "Evee", height: 0.2, type: 'Normal'});
 
-//for(var i = 0; i < pokemonList.length; i++){
-    //var pokemon = pokemonList[i];
-    //var output = pokemon.name + " (height: " + pokemon.height + ")";
-    
-    //if(pokemon.height > bigPokemon){
-        //output += 'Wow, thats big!';
-    //}
-     // Display the Pokémon information with the special label
-    //document.write("<p>" + output + "</p>");
-    
-    //document.getElementById("output").innerHTML += `Name: ${pokemon.name}, Height: ${pokemon.height}, Type: ${pokemon.type}<br>`;
-//}
-pokemonRepository.add({name: "Evee", height: 0.2, type: 'Normal'});
+        pokemonRepository.getAll().forEach(function(pokemon){
+            pokemonRepository.addListItem(pokemon);
+            document.createElement('button');
+        
+    });
 
-pokemonRepository.getAll().forEach(function(pokemon){
-    document.getElementById("output").innerHTML += 'Name:' + pokemon.name + ' , Height:' + pokemon.height + ' , Type:' + pokemon.type + '<br>';
-});
