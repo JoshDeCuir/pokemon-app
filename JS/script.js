@@ -1,7 +1,54 @@
 var pokemonRepository = (function (){
+var modalContainer = document.querySelector
+    ("#modal-container");
     var pokemonList = [];
     var pokemonAPI ="https://pokeapi.co/api/v2/pokemon/?limit=150";
     
+    function showModal(title, text){
+        var modalContainer = document.querySelector("#modal-container");
+        modalContainer.innerHTML = "";
+            var modal = document.createElement("div");
+                modal.classList.add("modal");
+            var closeButtonElement = document.createElement
+            ("button");
+                closeButtonElement.classList.add("modal-close");
+                closeButtonElement.innerText = "Close";
+                closeButtonElement.addEventListener("click" , hideModal);
+            var titleElement = document.createElement("h1");
+                titleElement.innerText = title;
+            var contentElement = document.createElement("p");
+                contentElement.innerText = text;
+
+        modal.appendChild(closeButtonElement);
+        modal.appendChild(titleElement);
+        modal.appendChild(contentElement);
+        modalContainer.appendChild(modal);
+        modalContainer.classList.add("is-visible");
+    }
+    function hideModal(){
+        modalContainer.classList.remove("is-visible");
+    }
+    window.addEventListener("keydown", (e) =>{
+        if (e.key === "Escape" &&
+        modalContainer.classList.contains("is-visible")){
+            hideModal();
+        }
+    });
+    
+    modalContainer.addEventListener("click" , (e) =>{
+        //Since this is also triggered when clicking INSIDE the modal
+        //We only want to close if the user clicks directly on the overlay
+        var target = e.target;
+        if(target === modalContainer){
+            hideModal();
+        }
+    });
+
+    document.querySelector("#show-modal").addEventListener
+    ("click", () =>{
+        showModal("Modal title", "This is the modal content!");
+    });
+
     function addListItem(pokemon){
         var pokemonList = document.querySelector(".pokemon-list");
         var listPokemon = document.createElement("li");
