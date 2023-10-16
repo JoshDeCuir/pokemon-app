@@ -25,9 +25,61 @@ var modalContainer = document.querySelector
         modalContainer.appendChild(modal);
         modalContainer.classList.add("is-visible");
     }
+
+    var dialogPromiseReject; //This is be set later, by showDialog
+
     function hideModal(){
+        var modalContainer = document.querySelector("#modal-container");
         modalContainer.classList.remove("is-visible");
+
+        if(dialogPromiseReject){
+            dialogPromiseReject();
+            dialogPromiseReject = null;
+        }
     }
+
+    function showDialog(title, text){
+        showModal(title, text);
+
+        //We want to add a confirm and cancel button to the modal
+        var modal = modalContainer.querySelector(".modal");
+
+        var confirmButton = document.createElement("button");
+        confirmButton.classList.add("modal-confirm");
+        confirmButton.innerText = "Confirm";
+
+        var cancelButton = document.createElement("button");
+        cancelButton.classList.add("modal-cancel");
+        cancelButton.innerText = "Cancel";
+
+        modal.appendChild(confirmButton);
+        modal.appendChild(cancelButton);
+
+        //We want to focus the confirmButton so that the user can simply press Enter
+        confirmButton.focus();
+        return new Promise((resolve, reject) => {
+            cancelButton.addEventListener("click" , hideModal);
+            confirmButton.addEventListener("click" , () => {
+                dialogPromiseReject = null; //Reset this
+                hideModal();
+                resolve();
+            });
+        //This can be used to reject from other functions
+            dialogPromiseReject = reject;
+        });
+
+    }
+
+    document.querySelector("#show-dialog").addEventListener
+    ("click" , () =>{
+        showDialog("Confirm action" , "Are you sure you want to do this?")
+        .then(function(){
+            alert("confirmed!");
+        }, () => {
+            alert("not confirmed");
+        });
+    });
+
     window.addEventListener("keydown", (e) =>{
         if (e.key === "Escape" &&
         modalContainer.classList.contains("is-visible")){
