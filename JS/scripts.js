@@ -48,7 +48,7 @@ var pokemonRepository = (function (){
         return fetch(url).then(function(response){
             return response.json();
         }).then(function (details) {
-            item.imageUrl = details.sprites.font_dafult;
+            item.imageUrl = details.sprites.front_default;
             item.height = details.height;
             item.types = details.types;
         }).catch(function (e) {
