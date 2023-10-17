@@ -59,8 +59,35 @@ var pokemonRepository = (function (){
     function showDetails(item){
     loadDetails(item).then(function() 
         {
-            console.log(item);
+            showModal("safasf", "asfasfaf");
         });
+    }
+
+    function showModal(title, text){
+        var modalContainer = document.querySelector("#modal-container");
+        modalContainer.innerHTML = "";
+            var modal = document.createElement("div");
+                modal.classList.add("modal");
+            var closeButtonElement = document.createElement
+            ("button");
+                closeButtonElement.classList.add("modal-close");
+                closeButtonElement.innerText = "Close";
+                closeButtonElement.addEventListener("click" , hideModal);
+            var titleElement = document.createElement("h1");
+                titleElement.innerText = title;
+            var contentElement = document.createElement("p");
+                contentElement.innerText = text;
+
+        modal.appendChild(closeButtonElement);
+        modal.appendChild(titleElement);
+        modal.appendChild(contentElement);
+        modalContainer.appendChild(modal);
+        modalContainer.classList.add("is-visible");
+    }
+
+    function hideModal(){
+        var modalContainer = document.querySelector("#modal-container");
+        modalContainer.classList.remove("is-visible");
     }
 
     function getAll(){
