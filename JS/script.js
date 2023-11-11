@@ -1,30 +1,33 @@
 var pokemonRepository = (function (){
     var pokemonList = [];
     var pokemonAPI ="https://pokeapi.co/api/v2/pokemon/?limit=150";
-    var modalContainer = document.querySelector("#modal-container");
-    
+
     function addListItem(pokemon){
         var button = document.createElement("button");
         button.innerText = pokemon.name;
+        button.classList.add("btn");
         button.classList.add("button-class");
+        button.setAttribute("data-toggle", "modal");
+        button.setAttribute("data-target", "#modal-container");
         button.addEventListener("click", function(event){
             showDetails(pokemon);
         });
         
         var listPokemon = document.createElement("li");
+        listPokemon.classList.add("list-group-item");
         listPokemon.appendChild(button);
         
-        var pokemonList = document.querySelector(".pokemon-list");
+        var pokemonList = document.querySelector(".list-group");
         pokemonList.appendChild(listPokemon);
     }
 
     function add(pokemon){
-        if(
-            typeof pokemon === "object" &&
-            'name' in pokemon
-        ){
+        if(typeof pokemon === "object" && 'name' in pokemon)
+        {
             pokemonList.push(pokemon);
-        } else{
+        }
+        else
+        {
             console.log('Pokemon is not correct.')
         }
     }
@@ -52,7 +55,7 @@ var pokemonRepository = (function (){
         }).then(function (details) {
             item.imageUrl = details.sprites.front_default;
             item.height = details.height;
-            item.types = details.types;
+            item.type = details.types;
         }).catch(function (e) {
             console.error(e);
         });
@@ -61,62 +64,18 @@ var pokemonRepository = (function (){
     function showDetails(item){
         loadDetails(item).then(function() 
         {
-            showModal(item);
+            // Add Pokemon Details
+            $("#pokemon-name").prop("innerText", item.name);
+            $("#pokemon-height").prop("innerText", "Height: " + item.height);
+            $("#pokemon-type").prop("innerText", "Type: " + item.type.map(function (x) { return x.type.name; }));
+            $("#pokemon-img").prop("src", item.imageUrl);
         });
     }
-
-    function showModal(item){
-        // Create modal div
-        var modal = document.createElement("div");
-        modal.classList.add("modal");
-
-        // Create Close Button
-        var closeButtonElement = document.createElement("button");
-        closeButtonElement.classList.add("modal-close");
-        closeButtonElement.innerText = "Close";
-        closeButtonElement.addEventListener("click" , hideModal);
-        modal.appendChild(closeButtonElement);
-        
-        // Add Pokemon Details
-        var titleElement = document.createElement("h1");
-        titleElement.innerText = item.name;
-        modal.appendChild(titleElement);
-        var contentElement = document.createElement("p");
-        contentElement.innerText = "Height: " + item.height;
-        modal.appendChild(contentElement);
-        var imageElement = document.createElement("img");
-        imageElement.src = item.imageUrl;
-        modal.appendChild(imageElement);
-
-        // Add Modal To Container
-        modalContainer.appendChild(modal);
-        modalContainer.classList.add("is-visible");
-    }
-
-    function hideModal(){;
-        modalContainer.innerHTML = "";
-        modalContainer.classList.remove("is-visible");
-    }
-
-    window.addEventListener("keydown", (e) =>{
-        if (e.key === "Escape" &&
-        modalContainer.classList.contains("is-visible")){
-            hideModal();
-        }
-    });
-    
-    modalContainer.addEventListener("click" , (e) =>{
-        //Since this is also triggered when clicking INSIDE the modal
-        //We only want to close if the user clicks directly on the overlay
-        var target = e.target;
-        if(target === modalContainer){
-            hideModal();
-        }
-    });
 
     function getAll(){
         return pokemonList;
     }
+    
     return{
         add: add,
         getAll: getAll,
