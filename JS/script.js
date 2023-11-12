@@ -14,10 +14,11 @@ var pokemonRepository = (function (){
         });
         
         var listPokemon = document.createElement("li");
-        listPokemon.classList.add("list-group-item");
+        listPokemon.classList.add("list-item");
+        listPokemon.classList.add("col-md-4");
         listPokemon.appendChild(button);
         
-        var pokemonList = document.querySelector(".list-group");
+        var pokemonList = document.querySelector("#pokemon-list");
         pokemonList.appendChild(listPokemon);
     }
 
